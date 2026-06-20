@@ -534,6 +534,39 @@ export default function Blackjack() {
           50% { transform: scale(1.08) translateY(-8px); }
           100% { transform: scale(1); }
         }
+
+        @media (max-width: 750px) {
+  h1 {
+    font-size: 30px !important;
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: 22px !important;
+  }
+
+  button {
+    font-size: 14px !important;
+    padding: 10px 12px !important;
+  }
+
+  p {
+    font-size: 14px !important;
+  }
+
+  div {
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  img {
+  max-width: 100%;
+  height: auto;
+}
+
+  
+}
       `}</style>
     </main>
   );
