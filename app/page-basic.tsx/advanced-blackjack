@@ -1,0 +1,337 @@
+"use client";
+
+import { useState } from "react";
+
+type Card = {
+  suit: string;
+  value: string;
+  hidden?: boolean;
+};
+
+const suits = ["♠️", "♥️", "♦️", "♣️"];
+const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+
+const buttonStyle = {
+  margin: 6,
+  padding: "14px 28px",
+  borderRadius: 14,
+  border: "none",
+  fontWeight: "bold",
+  cursor: "pointer",
+  fontSize: 16,
+};
+
+function drawCard(): Card {
+  return {
+    suit: suits[Math.floor(Math.random() * suits.length)],
+    value: values[Math.floor(Math.random() * values.length)],
+  };
+}
+
+function handValue(hand: Card[]) {
+  let total = 0;
+  let aces = 0;
+
+  hand.filter((card) => !card.hidden).forEach((card) => {
+    if (card.value === "A") {
+      total += 11;
+      aces++;
+    } else if (["J", "Q", "K"].includes(card.value)) {
+      total += 10;
+    } else {
+      total += Number(card.value);
+    }
+  });
+
+  while (total > 21 && aces > 0) {
+    total -= 10;
+    aces--;
+  }
+
+  return total;
+}
+
+function CardView({ card, index }: { card: Card; index: number }) {
+  const red = card.suit === "♥️" || card.suit === "♦️";
+
+  return (
+    <div
+      style={{
+        width: 92,
+        height: 132,
+        background: card.hidden ? "linear-gradient(135deg,#12351f,#0b1f12)" : "white",
+        color: card.hidden ? "#22c55e" : red ? "#dc2626" : "#111",
+        borderRadius: 14,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+        fontSize: 30,
+        fontWeight: "bold",
+        boxShadow: "0 14px 35px rgba(0,0,0,0.55)",
+        border: card.hidden ? "2px solid #22c55e" : "2px solid #e5e5e5",
+        transform: `translateY(${index * -2}px)`,
+        animation: "dealCard 0.35s ease-out",
+      }}
+    >
+      {card.hidden ? (
+        <>
+          <div style={{ fontSize: 38 }}>🌿</div>
+          <div style={{ fontSize: 12, letterSpacing: 2 }}>HEMPIE</div>
+        </>
+      ) : (
+        <>
+          <div>{card.value}</div>
+          <div>{card.suit}</div>
+        </>
+      )}
+    </div>
+  );
+}
+
+export default function Blackjack() {
+  const [credits, setCredits] = useState(2500);
+  const [bet, setBet] = useState(50);
+  const [playerHand, setPlayerHand] = useState<Card[]>([]);
+  const [dealerHand, setDealerHand] = useState<Card[]>([]);
+  const [message, setMessage] = useState("Place your bet and deal.");
+  const [gameActive, setGameActive] = useState(false);
+  const [dealing, setDealing] = useState(false);
+
+  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  async function startGame() {
+    if (credits < bet || dealing || gameActive) return;
+
+    setPlayerHand([]);
+    setDealerHand([]);
+    setMessage("Dealer is shuffling...");
+    setDealing(true);
+
+    const p1 = drawCard();
+    const d1 = drawCard();
+    const p2 = drawCard();
+    const d2 = { ...drawCard(), hidden: true };
+
+    await wait(500);
+    setMessage("Dealing...");
+    setPlayerHand([p1]);
+
+    await wait(450);
+    setDealerHand([d1]);
+
+    await wait(450);
+    setPlayerHand([p1, p2]);
+
+    await wait(450);
+    setDealerHand([d1, d2]);
+
+    setMessage("Your move: Hit or Stand.");
+    setGameActive(true);
+    setDealing(false);
+  }
+
+  async function hit() {
+    if (!gameActive || dealing) return;
+
+    setDealing(true);
+    setMessage("Dealer sends you a card...");
+
+    await wait(450);
+
+    const newHand = [...playerHand, drawCard()];
+    setPlayerHand(newHand);
+
+    if (handValue(newHand) > 21) {
+      setCredits((prev) => prev - bet);
+      setMessage("Bust. Dealer wins.");
+      setGameActive(false);
+    } else {
+      setMessage("Hit or Stand?");
+    }
+
+    setDealing(false);
+  }
+
+  async function stand() {
+    if (!gameActive || dealing) return;
+
+    setDealing(true);
+    setMessage("Dealer reveals...");
+
+    let dealer = dealerHand.map((card) => ({ ...card, hidden: false }));
+    setDealerHand(dealer);
+
+    await wait(700);
+
+    while (handValue(dealer) < 17) {
+      dealer = [...dealer, drawCard()];
+      setDealerHand(dealer);
+      setMessage("Dealer draws...");
+      await wait(700);
+    }
+
+    const playerTotal = handValue(playerHand);
+    const dealerTotal = handValue(dealer);
+
+    if (dealerTotal > 21 || playerTotal > dealerTotal) {
+      setCredits((prev) => prev + bet);
+      setMessage(`You win ${bet} Green Credits.`);
+    } else if (playerTotal < dealerTotal) {
+      setCredits((prev) => prev - bet);
+      setMessage(`Dealer wins. You lost ${bet}.`);
+    } else {
+      setMessage("Push. Bet returned.");
+    }
+
+    setGameActive(false);
+    setDealing(false);
+  }
+
+  return (
+    <main
+      style={{
+        minHeight: "100vh",
+        background:
+          "radial-gradient(circle at top, #174d2a 0%, #071107 50%, #020402 100%)",
+        color: "white",
+        padding: 30,
+        textAlign: "center",
+      }}
+    >
+      <h1 style={{ fontSize: 52, marginBottom: 5 }}>🌿 Hempie Blackjack</h1>
+
+      <h2 style={{ color: "#22c55e", marginTop: 0 }}>
+        {credits.toLocaleString()} Green Credits
+      </h2>
+
+      <div
+        style={{
+          maxWidth: 1050,
+          margin: "20px auto",
+          padding: 28,
+          borderRadius: 34,
+          background:
+            "radial-gradient(circle at center, #14532d 0%, #0f3b22 55%, #062010 100%)",
+          border: "8px solid #3b2412",
+          boxShadow: "0 30px 80px rgba(0,0,0,0.65)",
+        }}
+      >
+        <div
+          style={{
+            height: 120,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 20,
+          }}
+        >
+          <div
+            style={{
+              width: 95,
+              height: 95,
+              borderRadius: "50%",
+              background: "#111",
+              border: "3px solid #22c55e",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 44,
+              boxShadow: "0 0 30px rgba(34,197,94,0.35)",
+            }}
+          >
+            🧑‍💼
+          </div>
+
+          <div style={{ textAlign: "left" }}>
+            <div style={{ fontSize: 22, fontWeight: "bold" }}>Virtual Dealer</div>
+            <div style={{ color: "#bbf7d0" }}>{dealing ? "Dealing..." : "Ready"}</div>
+          </div>
+        </div>
+
+        <section style={{ marginTop: 20 }}>
+          <h2>Dealer: {gameActive ? "?" : handValue(dealerHand)}</h2>
+          <div style={{ display: "flex", justifyContent: "center", gap: 14, minHeight: 140 }}>
+            {dealerHand.map((card, i) => (
+              <CardView key={i} card={card} index={i} />
+            ))}
+          </div>
+        </section>
+
+        <div
+          style={{
+            margin: "35px auto",
+            width: 160,
+            height: 80,
+            borderRadius: "50%",
+            border: "2px dashed rgba(255,255,255,0.35)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#bbf7d0",
+            fontWeight: "bold",
+          }}
+        >
+          BET {bet}
+        </div>
+
+        <section>
+          <h2>Your Hand: {handValue(playerHand)}</h2>
+          <div style={{ display: "flex", justifyContent: "center", gap: 14, minHeight: 140 }}>
+            {playerHand.map((card, i) => (
+              <CardView key={i} card={card} index={i} />
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <h3 style={{ minHeight: 30 }}>{message}</h3>
+
+      <p>Bet Amount</p>
+      {[25, 50, 100, 250].map((amount) => (
+        <button
+          key={amount}
+          onClick={() => setBet(amount)}
+          disabled={gameActive || dealing}
+          style={{
+            margin: 6,
+            padding: "10px 18px",
+            borderRadius: 12,
+            cursor: "pointer",
+            background: bet === amount ? "#22c55e" : "#222",
+            color: bet === amount ? "#071107" : "white",
+            border: "none",
+            fontWeight: "bold",
+          }}
+        >
+          {amount}
+        </button>
+      ))}
+
+      <div style={{ marginTop: 18 }}>
+        <button onClick={startGame} disabled={gameActive || dealing} style={buttonStyle}>
+          Deal
+        </button>
+        <button onClick={hit} disabled={!gameActive || dealing} style={buttonStyle}>
+          Hit
+        </button>
+        <button onClick={stand} disabled={!gameActive || dealing} style={buttonStyle}>
+          Stand
+        </button>
+      </div>
+
+      <style jsx>{`
+        @keyframes dealCard {
+          from {
+            transform: translateY(-40px) scale(0.85);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+          }
+        }
+      `}</style>
+    </main>
+  );
+}
