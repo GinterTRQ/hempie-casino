@@ -5,7 +5,7 @@ import { useState } from "react";
 type Card = {
   suit: string;
   value: string;
-  hidden?: boolean;
+  hidden: boolean;
 };
 
 const suits = ["♠", "♥", "♦", "♣"];
@@ -42,6 +42,7 @@ function drawCard(): Card {
   return {
     suit: suits[Math.floor(Math.random() * suits.length)],
     value: values[Math.floor(Math.random() * values.length)],
+    hidden: false,
   };
 }
 
@@ -49,16 +50,18 @@ function handValue(hand: Card[]) {
   let total = 0;
   let aces = 0;
 
-  hand.filter((c) => !c.hidden).forEach((card) => {
-    if (card.value === "A") {
-      total += 11;
-      aces++;
-    } else if (["J", "Q", "K"].includes(card.value)) {
-      total += 10;
-    } else {
-      total += Number(card.value);
-    }
-  });
+  hand
+    .filter((card) => !card.hidden)
+    .forEach((card) => {
+      if (card.value === "A") {
+        total += 11;
+        aces++;
+      } else if (["J", "Q", "K"].includes(card.value)) {
+        total += 10;
+      } else {
+        total += Number(card.value);
+      }
+    });
 
   while (total > 21 && aces > 0) {
     total -= 10;
@@ -76,6 +79,7 @@ function speak(text: string) {
   const voice = new SpeechSynthesisUtterance(clean);
   voice.rate = 1;
   voice.pitch = 1.25;
+
   window.speechSynthesis.cancel();
   window.speechSynthesis.speak(voice);
 }
@@ -84,7 +88,7 @@ function beep(type: "deal" | "win" | "lose" | "blackjack") {
   if (typeof window === "undefined") return;
 
   const AudioContextClass =
-    window.AudioContext || (window as any).webkitAudioContext;
+    window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
 
   if (!AudioContextClass) return;
 
@@ -186,7 +190,7 @@ export default function Blackjack() {
     const p1 = drawCard();
     const d1 = drawCard();
     const p2 = drawCard();
-    const d2 = { ...drawCard(), hidden: true };
+    const d2: Card = { ...drawCard(), hidden: true };
 
     await wait(400);
     beep("deal");
@@ -228,7 +232,7 @@ export default function Blackjack() {
     await wait(450);
     beep("deal");
 
-    const nextHand = [...playerHand, drawCard()];
+    const nextHand: Card[] = [...playerHand, drawCard()];
     setPlayerHand(nextHand);
 
     if (handValue(nextHand) > 21) {
@@ -247,7 +251,11 @@ export default function Blackjack() {
   async function finishRound(roundBet: number, finalPlayerHand: Card[]) {
     setDealing(true);
 
-    let dealer = dealerHand.map((c) => ({ ...c, hidden: false }));
+    let dealer: Card[] = dealerHand.map((card) => ({
+      ...card,
+      hidden: false,
+    }));
+
     setDealerHand(dealer);
     setCosmo("🐶 Cosmo reveals the hidden card...");
 
@@ -297,7 +305,7 @@ export default function Blackjack() {
     await wait(500);
     beep("deal");
 
-    const nextHand = [...playerHand, drawCard()];
+    const nextHand: Card[] = [...playerHand, drawCard()];
     setPlayerHand(nextHand);
 
     if (handValue(nextHand) > 21) {
