@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import type { CSSProperties } from "react";
 
 type Card = {
   suit: string;
   value: string;
   hidden: boolean;
 };
+
+type SoundType = "deal" | "win" | "lose" | "blackjack";
 
 const suits = ["♠", "♥", "♦", "♣"];
 const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
@@ -84,11 +87,15 @@ function speak(text: string) {
   window.speechSynthesis.speak(voice);
 }
 
-function beep(type: "deal" | "win" | "lose" | "blackjack") {
+function beep(type: SoundType) {
   if (typeof window === "undefined") return;
 
+  type WindowWithWebkit = Window & {
+    webkitAudioContext?: typeof AudioContext;
+  };
+
   const AudioContextClass =
-    window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    window.AudioContext || (window as WindowWithWebkit).webkitAudioContext;
 
   if (!AudioContextClass) return;
 
@@ -149,7 +156,7 @@ function CardBox({ card }: { card: Card }) {
   );
 }
 
-const tableButton = {
+const tableButton: CSSProperties = {
   padding: "18px 28px",
   border: "none",
   borderRadius: 18,
@@ -252,7 +259,8 @@ export default function Blackjack() {
     setDealing(true);
 
     let dealer: Card[] = dealerHand.map((card) => ({
-      ...card,
+      suit: card.suit,
+      value: card.value,
       hidden: false,
     }));
 
@@ -262,7 +270,10 @@ export default function Blackjack() {
     await wait(700);
 
     while (handValue(dealer) < 17) {
-      dealer = [...dealer, drawCard()];
+      const newDealerCard: Card = drawCard();
+
+      dealer = [...dealer, newDealerCard];
+
       beep("deal");
       setDealerHand(dealer);
       setCosmo("🐶 Cosmo draws...");
