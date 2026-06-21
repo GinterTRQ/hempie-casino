@@ -5,27 +5,60 @@ import { useEffect, useRef, useState } from "react";
 type GameState = "idle" | "running" | "crashed" | "cashed";
 
 const reactions = [
-  "🪚 Frank says: measure twice, cash once.",
-  "📐 Cabinet layout is getting spicy.",
+  "🪚 Frank says: measure twice, gamble once.",
+  "📐 This cabinet layout is absolutely cooking.",
   "🚚 Delivery truck is somehow still on schedule.",
   "🧰 Installer says this wall is definitely not straight.",
-  "💰 Invoice is looking healthy.",
+  "💰 Invoice is getting dangerously large.",
   "🚪 Soft-close hinges engaged.",
+  "🔥 Booming Cabinets is printing money.",
+  "📦 Someone ordered 47 uppers and no lowers.",
+  "🧾 Change order detected... keep riding?",
+  "👷 Frank says the customer wants gold handles now.",
 ];
 
 function getCrashPoint() {
   const random = Math.random();
 
-  if (random < 0.45) return Number((1 + Math.random() * 1.4).toFixed(2));
-  if (random < 0.8) return Number((2.4 + Math.random() * 3).toFixed(2));
-  if (random < 0.95) return Number((5.5 + Math.random() * 8).toFixed(2));
+  if (random < 0.15) return Number((1.5 + Math.random() * 1.5).toFixed(2));
+  if (random < 0.6) return Number((3 + Math.random() * 4).toFixed(2));
+  if (random < 0.88) return Number((7 + Math.random() * 10).toFixed(2));
+  if (random < 0.98) return Number((18 + Math.random() * 32).toFixed(2));
 
-  return Number((14 + Math.random() * 20).toFixed(2));
+  return Number((75 + Math.random() * 175).toFixed(2));
+}
+
+function beep(type: "start" | "cashout" | "crash" | "tick") {
+  if (typeof window === "undefined") return;
+
+  const AudioContextClass =
+    window.AudioContext ||
+    (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+
+  if (!AudioContextClass) return;
+
+  const ctx = new AudioContextClass();
+  const oscillator = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  oscillator.connect(gain);
+  gain.connect(ctx.destination);
+
+  oscillator.frequency.value =
+    type === "start" ? 440 : type === "cashout" ? 740 : type === "crash" ? 100 : 320;
+
+  gain.gain.value = type === "crash" ? 0.09 : 0.045;
+  oscillator.start();
+
+  setTimeout(() => {
+    oscillator.stop();
+    ctx.close();
+  }, type === "crash" ? 300 : 85);
 }
 
 export default function Crash() {
-  const [money, setMoney] = useState(25000000);
-  const [bet, setBet] = useState(50);
+  const [money, setMoney] = useState(250000000);
+  const [bet, setBet] = useState(50000);
   const [multiplier, setMultiplier] = useState(1);
   const [crashPoint, setCrashPoint] = useState(0);
   const [state, setState] = useState<GameState>("idle");
@@ -43,6 +76,7 @@ export default function Crash() {
     setState("running");
     setLastResult("");
     setMessage("🚀 Job started. Collect the invoice before the client changes the layout!");
+    beep("start");
   }
 
   function cashOut() {
@@ -50,10 +84,13 @@ export default function Crash() {
 
     const winnings = Math.floor(bet * multiplier);
 
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
     setMoney((prev) => prev + winnings - bet);
     setState("cashed");
-    setLastResult(`✅ INVOICE COLLECTED AT ${multiplier.toFixed(2)}x — MADE $${winnings}`);
+    setLastResult(`✅ INVOICE COLLECTED AT ${multiplier.toFixed(2)}x — MADE $${winnings.toLocaleString()}`);
     setMessage("💰 Frank says: paid in full. No change orders today.");
+    beep("cashout");
   }
 
   useEffect(() => {
@@ -61,46 +98,49 @@ export default function Crash() {
 
     intervalRef.current = setInterval(() => {
       setMultiplier((prev) => {
-        const next = Number((prev + 0.04 + prev * 0.018).toFixed(2));
+        const next = Number((prev + 0.035 + prev * 0.014).toFixed(2));
 
-        if (Math.random() < 0.07) {
+        if (Math.random() < 0.08) {
           setMessage(reactions[Math.floor(Math.random() * reactions.length)]);
         }
+
+        if (Math.random() < 0.12) beep("tick");
 
         if (next >= crashPoint) {
           if (intervalRef.current) clearInterval(intervalRef.current);
 
           setState("crashed");
           setMoney((prevMoney) => prevMoney - bet);
-          setLastResult(`💥 CHANGE ORDER AT ${crashPoint.toFixed(2)}x — LOST $${bet}`);
+          setLastResult(`💥 CHANGE ORDER AT ${crashPoint.toFixed(2)}x — LOST $${bet.toLocaleString()}`);
           setMessage("💥 Customer changed from shaker white to walnut inset after delivery.");
+          beep("crash");
 
           return crashPoint;
         }
 
         return next;
       });
-    }, 110);
+    }, 115);
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [state, crashPoint, bet]);
 
-  const cabinetY = Math.min(multiplier * 18, 210);
+  const cabinetY = Math.min(multiplier * 12, 230);
 
   return (
     <main className="page">
-      <h1>🧰 Booming Cabinets Crash</h1>
-      <h2>${money.toLocaleString()} Project Cash</h2>
+      <h1>🧰 Frank&apos;s Crash</h1>
+      <h2>💰 ${money.toLocaleString()} Cabinet Empire Fund</h2>
 
       <div className="casino">
         <div className="topHud">
           <div className="dealerBadge">
             <div className="cabinetIcon">🚪</div>
             <div>
-              <h3>Frank&apos;s Cabinet Desk</h3>
-              <p>Change Order Risk Manager</p>
+              <h3>Booming Cabinets</h3>
+              <p>Change Order Risk Desk</p>
               <small>Soft-close specialist · Full-time invoice collector</small>
             </div>
           </div>
@@ -138,14 +178,14 @@ export default function Crash() {
         </div>
 
         <div className="bets">
-          {[25, 50, 100, 250].map((amount) => (
+          {[50000, 100000, 250000, 1000000, 5000000].map((amount) => (
             <button
               key={amount}
               onClick={() => setBet(amount)}
               disabled={state === "running"}
               className={bet === amount ? "activeBet" : ""}
             >
-              ${amount}
+              ${amount.toLocaleString()}
             </button>
           ))}
         </div>
@@ -161,6 +201,7 @@ export default function Crash() {
           padding: 28px;
           text-align: center;
           font-family: Arial, sans-serif;
+          overflow-x: hidden;
         }
 
         h1 {
@@ -315,10 +356,13 @@ export default function Crash() {
 
         .bets {
           margin-top: 22px;
+          display: flex;
+          justify-content: center;
+          gap: 8px;
+          flex-wrap: wrap;
         }
 
         .bets button {
-          margin: 6px;
           padding: 12px 20px;
           background: #2b1608;
           color: white;
@@ -338,7 +382,6 @@ export default function Crash() {
         @media (max-width: 750px) {
           .page {
             padding: 14px;
-            overflow-x: hidden;
           }
 
           h1 {
@@ -347,7 +390,7 @@ export default function Crash() {
           }
 
           h2 {
-            font-size: 24px;
+            font-size: 22px;
           }
 
           .topHud {
@@ -380,17 +423,22 @@ export default function Crash() {
           }
 
           .multiplier {
-            font-size: 48px;
+            font-size: clamp(34px, 10vw, 48px);
           }
 
           .rocket {
-            font-size: 56px;
+            font-size: clamp(42px, 11vw, 56px);
           }
 
           .controls button {
-            width: 46%;
+            width: 47%;
             padding: 13px 8px;
             font-size: 13px;
+          }
+
+          .bets button {
+            font-size: 13px;
+            padding: 10px 12px;
           }
         }
       `}</style>
