@@ -536,36 +536,45 @@ export default function Blackjack() {
         }
 
         @media (max-width: 750px) {
+  main {
+    padding: 14px !important;
+    overflow-x: hidden;
+  }
+
   h1 {
     font-size: 30px !important;
-    line-height: 1.1;
+    line-height: 1.1 !important;
+    margin-bottom: 8px !important;
   }
 
   h2 {
     font-size: 22px !important;
   }
 
-  button {
-    font-size: 14px !important;
-    padding: 10px 12px !important;
+  main > div {
+    max-width: 100% !important;
   }
 
-  p {
-    font-size: 14px !important;
+  main > div > div:first-child {
+    flex-direction: column !important;
+    gap: 12px !important;
   }
 
-  div {
-    max-width: 100%;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+  main > div > div:first-child > div {
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   img {
-  max-width: 100%;
-  height: auto;
-}
+    width: 82px !important;
+    height: 82px !important;
+  }
 
-  
+  button {
+    font-size: 13px !important;
+    padding: 12px 10px !important;
+  }
+
 }
       `}</style>
     </main>
