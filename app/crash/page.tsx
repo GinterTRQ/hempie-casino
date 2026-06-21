@@ -5,12 +5,12 @@ import { useEffect, useRef, useState } from "react";
 type GameState = "idle" | "running" | "crashed" | "cashed";
 
 const reactions = [
-  "🚀 Frank says let it ride...",
-  "💰 Big multiplier energy.",
-  "🐶 Cosmo likes this rocket.",
-  "⚠️ Frank smells danger.",
-  "🔥 Full send.",
-  "🌿 This rocket is getting spicy.",
+  "🪚 Frank says: measure twice, cash once.",
+  "📐 Cabinet layout is getting spicy.",
+  "🚚 Delivery truck is somehow still on schedule.",
+  "🧰 Installer says this wall is definitely not straight.",
+  "💰 Invoice is looking healthy.",
+  "🚪 Soft-close hinges engaged.",
 ];
 
 function getCrashPoint() {
@@ -24,17 +24,17 @@ function getCrashPoint() {
 }
 
 export default function Crash() {
-  const [points, setPoints] = useState(2500);
+  const [money, setMoney] = useState(25000000);
   const [bet, setBet] = useState(50);
   const [multiplier, setMultiplier] = useState(1);
   const [crashPoint, setCrashPoint] = useState(0);
   const [state, setState] = useState<GameState>("idle");
-  const [message, setMessage] = useState("Frank is checking the rocket fuel.");
+  const [message, setMessage] = useState("Frank is pricing out the cabinet job.");
   const [lastResult, setLastResult] = useState("");
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   function startGame() {
-    if (state === "running" || points < bet) return;
+    if (state === "running" || money < bet) return;
 
     const point = getCrashPoint();
 
@@ -42,7 +42,7 @@ export default function Crash() {
     setMultiplier(1);
     setState("running");
     setLastResult("");
-    setMessage("🚀 Frank launched the rocket. Cash out before it crashes!");
+    setMessage("🚀 Job started. Collect the invoice before the client changes the layout!");
   }
 
   function cashOut() {
@@ -50,10 +50,10 @@ export default function Crash() {
 
     const winnings = Math.floor(bet * multiplier);
 
-    setPoints((prev) => prev + winnings - bet);
+    setMoney((prev) => prev + winnings - bet);
     setState("cashed");
-    setLastResult(`✅ CASHED OUT AT ${multiplier.toFixed(2)}x — WON ${winnings} THC POINTS`);
-    setMessage("💰 Frank says: smart move. Bag secured.");
+    setLastResult(`✅ INVOICE COLLECTED AT ${multiplier.toFixed(2)}x — MADE $${winnings}`);
+    setMessage("💰 Frank says: paid in full. No change orders today.");
   }
 
   useEffect(() => {
@@ -71,9 +71,9 @@ export default function Crash() {
           if (intervalRef.current) clearInterval(intervalRef.current);
 
           setState("crashed");
-          setPoints((prevPoints) => prevPoints - bet);
-          setLastResult(`💥 CRASHED AT ${crashPoint.toFixed(2)}x — LOST ${bet} THC POINTS`);
-          setMessage("💥 Frank saw that coming.");
+          setMoney((prevMoney) => prevMoney - bet);
+          setLastResult(`💥 CHANGE ORDER AT ${crashPoint.toFixed(2)}x — LOST $${bet}`);
+          setMessage("💥 Customer changed from shaker white to walnut inset after delivery.");
 
           return crashPoint;
         }
@@ -87,21 +87,21 @@ export default function Crash() {
     };
   }, [state, crashPoint, bet]);
 
-  const rocketY = Math.min(multiplier * 18, 210);
+  const cabinetY = Math.min(multiplier * 18, 210);
 
   return (
     <main className="page">
-      <h1>🚀 Frank&apos;s Crash</h1>
-      <h2>{points.toLocaleString()} THC Points</h2>
+      <h1>🧰 Booming Cabinets Crash</h1>
+      <h2>${money.toLocaleString()} Project Cash</h2>
 
       <div className="casino">
         <div className="topHud">
           <div className="dealerBadge">
-            <img src="/cosmo.png" alt="Cosmo" className="cosmoPhoto" />
+            <div className="cabinetIcon">🚪</div>
             <div>
-              <h3>🔥 Frank</h3>
-              <p>Rocket Risk Manager</p>
-              <small>High multiplier specialist · Part-time chaos dealer</small>
+              <h3>Frank&apos;s Cabinet Desk</h3>
+              <p>Change Order Risk Manager</p>
+              <small>Soft-close specialist · Full-time invoice collector</small>
             </div>
           </div>
 
@@ -113,10 +113,10 @@ export default function Crash() {
             <div
               className="rocket"
               style={{
-                transform: `translateY(-${rocketY}px) scale(${state === "crashed" ? 1.3 : 1})`,
+                transform: `translateY(-${cabinetY}px) scale(${state === "crashed" ? 1.35 : 1})`,
               }}
             >
-              {state === "crashed" ? "💥" : "🚀"}
+              {state === "crashed" ? "💥" : "🧰"}
             </div>
 
             <div className="multiplier">{multiplier.toFixed(2)}x</div>
@@ -127,12 +127,12 @@ export default function Crash() {
           {lastResult && <div className="result">{lastResult}</div>}
 
           <div className="controls">
-            <button onClick={startGame} disabled={state === "running" || points < bet}>
-              LAUNCH 🚀
+            <button onClick={startGame} disabled={state === "running" || money < bet}>
+              START INSTALL 🪚
             </button>
 
             <button onClick={cashOut} disabled={state !== "running"}>
-              CASH OUT 💰
+              COLLECT INVOICE 💰
             </button>
           </div>
         </div>
@@ -145,18 +145,18 @@ export default function Crash() {
               disabled={state === "running"}
               className={bet === amount ? "activeBet" : ""}
             >
-              {amount}
+              ${amount}
             </button>
           ))}
         </div>
 
-        <p className="disclaimer">Free-to-play demo. THC Points have no cash value.</p>
+        <p className="disclaimer">Free-to-play cabinet chaos simulator. No real money value.</p>
       </div>
 
       <style jsx>{`
         .page {
           min-height: 100vh;
-          background: radial-gradient(circle at top, #174d2a, #071107 55%, #020402);
+          background: radial-gradient(circle at top, #8b5a2b, #24140a 55%, #080402);
           color: white;
           padding: 28px;
           text-align: center;
@@ -169,7 +169,7 @@ export default function Crash() {
         }
 
         h2 {
-          color: #22c55e;
+          color: #fbbf24;
           margin-bottom: 18px;
         }
 
@@ -189,7 +189,7 @@ export default function Crash() {
         .quote {
           flex: 1;
           background: rgba(0, 0, 0, 0.38);
-          border: 2px solid #22c55e;
+          border: 2px solid #fbbf24;
           border-radius: 22px;
           padding: 16px;
         }
@@ -201,13 +201,18 @@ export default function Crash() {
           text-align: left;
         }
 
-        .cosmoPhoto {
+        .cabinetIcon {
           width: 100px;
           height: 100px;
-          border-radius: 50%;
-          object-fit: cover;
-          border: 4px solid #22c55e;
-          box-shadow: 0 0 28px rgba(34, 197, 94, 0.75);
+          border-radius: 24px;
+          background: linear-gradient(135deg, #a16207, #422006);
+          border: 4px solid #fbbf24;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 54px;
+          box-shadow: 0 0 28px rgba(251, 191, 36, 0.65);
+          flex-shrink: 0;
         }
 
         .dealerBadge h3 {
@@ -216,7 +221,7 @@ export default function Crash() {
         }
 
         .dealerBadge p {
-          color: #bbf7d0;
+          color: #fde68a;
           font-weight: bold;
           margin: 4px 0;
         }
@@ -231,8 +236,8 @@ export default function Crash() {
         }
 
         .crashTable {
-          background: radial-gradient(circle at center, #14532d 0%, #0f3b22 58%, #062010 100%);
-          border: 10px solid #3b2412;
+          background: radial-gradient(circle at center, #78350f 0%, #451a03 58%, #1c0a02 100%);
+          border: 10px solid #2b1608;
           border-radius: 42px;
           min-height: 430px;
           padding: 26px;
@@ -252,7 +257,7 @@ export default function Crash() {
         .rocket {
           font-size: 70px;
           transition: transform 0.12s linear;
-          filter: drop-shadow(0 0 18px rgba(34, 197, 94, 0.9));
+          filter: drop-shadow(0 0 18px rgba(251, 191, 36, 0.9));
         }
 
         .multiplier {
@@ -260,16 +265,16 @@ export default function Crash() {
           top: 40%;
           font-size: 68px;
           font-weight: 900;
-          color: #bbf7d0;
-          text-shadow: 0 0 30px rgba(34, 197, 94, 0.8);
+          color: #fde68a;
+          text-shadow: 0 0 30px rgba(251, 191, 36, 0.8);
         }
 
         .line {
           height: 2px;
           background: repeating-linear-gradient(
             to right,
-            rgba(255, 255, 255, 0.2),
-            rgba(255, 255, 255, 0.2) 10px,
+            rgba(255, 255, 255, 0.25),
+            rgba(255, 255, 255, 0.25) 10px,
             transparent 10px,
             transparent 20px
           );
@@ -281,7 +286,7 @@ export default function Crash() {
           font-size: 22px;
           font-weight: 900;
           margin: 18px 0;
-          color: #bbf7d0;
+          color: #fde68a;
         }
 
         .controls {
@@ -295,8 +300,8 @@ export default function Crash() {
           padding: 16px 28px;
           border: none;
           border-radius: 16px;
-          background: linear-gradient(180deg, #22c55e, #15803d);
-          color: #071107;
+          background: linear-gradient(180deg, #fbbf24, #b45309);
+          color: #1c0a02;
           font-weight: 900;
           font-size: 17px;
           cursor: pointer;
@@ -315,17 +320,17 @@ export default function Crash() {
         .bets button {
           margin: 6px;
           padding: 12px 20px;
-          background: #222;
+          background: #2b1608;
           color: white;
         }
 
         .bets .activeBet {
-          background: #22c55e;
-          color: #071107;
+          background: #fbbf24;
+          color: #1c0a02;
         }
 
         .disclaimer {
-          color: #bbf7d0;
+          color: #fde68a;
           font-size: 13px;
           margin-top: 18px;
         }
@@ -361,9 +366,10 @@ export default function Crash() {
             padding: 16px;
           }
 
-          .cosmoPhoto {
+          .cabinetIcon {
             width: 80px;
             height: 80px;
+            font-size: 42px;
           }
 
           .crashTable {
