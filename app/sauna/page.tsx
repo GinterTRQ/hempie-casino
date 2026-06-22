@@ -24,7 +24,7 @@ const questions: Question[] = [
   },
   {
     question: "Cold plunge after sauna?",
-    answers: [
+    answers: [ 
       { text: "Absolutely not", points: 5 },
       { text: "Maybe a cold shower", points: 15 },
       { text: "Yes, every round", points: 30 },
