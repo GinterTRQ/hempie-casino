@@ -1529,41 +1529,73 @@ opacity: 0;
 
 @media (max-width: 768px) {
   .page {
-    padding: 12px;
+    padding: 10px;
+    overflow-x: hidden;
   }
 
   .topbar {
     flex-direction: column;
-    gap: 14px;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 3px;
   }
 
   h1 {
-    font-size: 46px;
-    letter-spacing: -3px;
+    font-size: 42px;
+    letter-spacing: -2px;
+    line-height: .9;
   }
 
   .sub {
-    font-size: 14px;
+    font-size: 13px;
+    margin-top: 8px;
   }
 
   .classBadge {
-    width: 120px;
-    height: 90px;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    width: 92px;
+    height: 72px;
+    border-radius: 18px;
   }
 
   .classBadge strong {
-    font-size: 34px;
+    font-size: 28px;
+  }
+
+  .classBadge span {
+    font-size: 15px;
+  }
+
+  .classBadge small {
+    font-size: 9px;
   }
 
   .layout {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   .garage {
+    order: 2;
     max-height: none;
+    padding: 12px;
     display: flex;
-    overflow-x: auto;
     gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    border-radius: 20px;
+  }
+
+  .garage::-webkit-scrollbar {
+    display: none;
   }
 
   .panelTitle {
@@ -1571,72 +1603,122 @@ opacity: 0;
   }
 
   .car {
-    min-width: 180px;
-    grid-template-columns: 70px 1fr;
+    min-width: 185px;
+    grid-template-columns: 72px 1fr;
+    scroll-snap-align: start;
+    margin-bottom: 0;
   }
 
   .car img {
-    width: 70px;
-    height: 48px;
+    width: 72px;
+    height: 50px;
+    object-fit: contain;
+  }
+
+  .showroom {
+    order: 1;
+    padding: 10px;
+    border-radius: 22px;
   }
 
   .heroCard {
-    height: 390px;
+    height: 430px;
+    border-radius: 22px;
   }
 
   .garagePartnerWall {
     display: none;
   }
 
+  .garageBg {
+    object-position: center;
+  }
+
   .garageCar {
-    width: 105%;
+    width: 118%;
     max-height: 72%;
-    bottom: -5px;
-    left: 52%;
+    left: 54%;
+    bottom: -8px;
+  }
+
+  .floorGlow {
+    width: 80%;
+    bottom: 8px;
   }
 
   .carInfo {
     left: 18px;
-    bottom: 22px;
+    bottom: 20px;
+    max-width: 260px;
   }
 
   .carInfo p {
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 3px;
   }
 
   .carInfo h2 {
-    font-size: clamp(34px, 10vw, 54px);
+    font-size: clamp(34px, 11vw, 52px);
     letter-spacing: -3px;
+    line-height: .9;
   }
 
   .carInfo span {
-    font-size: 13px;
-    max-width: 260px;
+    font-size: 12px;
+    margin-top: 10px;
   }
 
   .stageButtons {
     position: absolute;
+    top: 12px;
     left: 12px;
     right: 12px;
-    top: 12px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
   }
 
   .stage {
     min-width: 0;
-    padding: 10px 8px;
+    padding: 10px 6px;
+    border-radius: 12px;
     font-size: 12px;
   }
 
   .stage small {
-    font-size: 10px;
+    font-size: 9px;
+  }
+
+  .gamePrompt {
+    display: none;
+  }
+
+  .boostPanel {
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .boostHeader {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .boostHeader h3 {
+    font-size: 26px;
+  }
+
+  .gainPill {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .boost {
+    padding: 14px;
   }
 
   .boostNumbers {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 6px;
   }
 
   .boostArrow {
@@ -1649,20 +1731,54 @@ opacity: 0;
     font-size: 28px;
   }
 
+  .boostTrack {
+    height: 22px;
+  }
+
+  .boostMeta {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
   .summary {
     order: 3;
+    padding: 14px;
+    border-radius: 22px;
+  }
+
+  .summaryTop h3 {
+    font-size: 24px;
+  }
+
+  .statCard strong {
+    font-size: 20px;
+  }
+
+  .optionsPanel {
+    margin-top: 12px;
+    padding: 14px;
+    border-radius: 22px;
+  }
+
+  .upgradeTop h2 {
+    font-size: 24px;
   }
 
   .optionsGrid {
     grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .option {
-    min-height: 80px;
+    min-height: 78px;
+    border-radius: 16px;
   }
 
-  .gamePrompt {
-    display: none;
+  .cta {
+    position: sticky;
+    bottom: 10px;
+    z-index: 50;
+    box-shadow: 0 0 35px rgba(250,204,21,.35);
   }
 }
         @media (max-width: 1200px) {
