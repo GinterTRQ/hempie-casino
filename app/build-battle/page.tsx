@@ -1826,6 +1826,76 @@ opacity: 0;
             align-items: flex-start;
           }
         }
+
+        @media (max-width: 768px) {
+  .layout {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .garage {
+    order: 2 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    max-height: none !important;
+  }
+
+  .showroom {
+    order: 1 !important;
+  }
+
+  .summary {
+    order: 3 !important;
+    position: static !important;
+  }
+
+  .heroCard {
+    height: 420px !important;
+  }
+
+  .garagePartnerWall {
+    display: none !important;
+  }
+
+  .garageCar {
+    width: 120% !important;
+    max-height: 72% !important;
+    left: 55% !important;
+    bottom: -8px !important;
+  }
+
+  .stageButtons {
+    position: absolute !important;
+    top: 12px !important;
+    left: 12px !important;
+    right: 12px !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .carInfo {
+    left: 18px !important;
+    bottom: 22px !important;
+    max-width: 280px !important;
+  }
+
+  .carInfo h2 {
+    font-size: 42px !important;
+    letter-spacing: -3px !important;
+  }
+
+  .optionsGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .cta {
+    position: sticky !important;
+    bottom: 10px !important;
+    z-index: 99 !important;
+  }
+}
       `}</style>
     </main>
   );
