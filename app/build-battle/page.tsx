@@ -1527,6 +1527,144 @@ opacity: 0;
     drop-shadow(0 0 30px rgba(250,204,21,.20));
 }
 
+@media (max-width: 768px) {
+  .page {
+    padding: 12px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  h1 {
+    font-size: 46px;
+    letter-spacing: -3px;
+  }
+
+  .sub {
+    font-size: 14px;
+  }
+
+  .classBadge {
+    width: 120px;
+    height: 90px;
+  }
+
+  .classBadge strong {
+    font-size: 34px;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .garage {
+    max-height: none;
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+  }
+
+  .panelTitle {
+    display: none;
+  }
+
+  .car {
+    min-width: 180px;
+    grid-template-columns: 70px 1fr;
+  }
+
+  .car img {
+    width: 70px;
+    height: 48px;
+  }
+
+  .heroCard {
+    height: 390px;
+  }
+
+  .garagePartnerWall {
+    display: none;
+  }
+
+  .garageCar {
+    width: 105%;
+    max-height: 72%;
+    bottom: -5px;
+    left: 52%;
+  }
+
+  .carInfo {
+    left: 18px;
+    bottom: 22px;
+  }
+
+  .carInfo p {
+    font-size: 11px;
+    letter-spacing: 3px;
+  }
+
+  .carInfo h2 {
+    font-size: clamp(34px, 10vw, 54px);
+    letter-spacing: -3px;
+  }
+
+  .carInfo span {
+    font-size: 13px;
+    max-width: 260px;
+  }
+
+  .stageButtons {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: 12px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .stage {
+    min-width: 0;
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+
+  .stage small {
+    font-size: 10px;
+  }
+
+  .boostNumbers {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .boostArrow {
+    display: none;
+  }
+
+  .stockNumber,
+  .currentNumber {
+    text-align: left;
+    font-size: 28px;
+  }
+
+  .summary {
+    order: 3;
+  }
+
+  .optionsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .option {
+    min-height: 80px;
+  }
+
+  .gamePrompt {
+    display: none;
+  }
+}
         @media (max-width: 1200px) {
           .layout {
             grid-template-columns: 1fr;
