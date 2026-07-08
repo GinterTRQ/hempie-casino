@@ -1529,69 +1529,127 @@ opacity: 0;
 
 @media (max-width: 768px) {
   .page {
-    padding: 10px;
+    padding: 14px;
     overflow-x: hidden;
   }
 
   .topbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    display: block;
     margin-bottom: 14px;
+    position: relative;
   }
 
   .eyebrow {
     font-size: 11px;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
   }
 
   h1 {
-    font-size: 42px;
-    letter-spacing: -2px;
+    font-size: 44px;
     line-height: .9;
+    letter-spacing: -3px;
+    max-width: 260px;
   }
 
   .sub {
-    font-size: 13px;
-    margin-top: 8px;
+    font-size: 14px;
+    max-width: 300px;
+    line-height: 1.35;
   }
 
   .classBadge {
     position: absolute;
-    right: 8px;
     top: 8px;
-    width: 92px;
-    height: 72px;
+    right: 0;
+    width: 94px;
+    height: 78px;
     border-radius: 18px;
-  }
-
-  .classBadge strong {
-    font-size: 28px;
   }
 
   .classBadge span {
     font-size: 15px;
   }
 
-  .classBadge small {
-    font-size: 9px;
+  .classBadge strong {
+    font-size: 30px;
   }
 
   .layout {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
+  }
+
+  .showroom {
+    order: 1;
+    padding: 8px;
+    border-radius: 24px;
+  }
+
+  .heroCard {
+    height: 360px;
+    border-radius: 22px;
+  }
+
+  .garagePartnerWall {
+    display: none;
+  }
+
+  .stageButtons {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .stage {
+    padding: 10px 6px;
+    border-radius: 14px;
+    font-size: 12px;
+  }
+
+  .stage small {
+    font-size: 9px;
+  }
+
+  .garageCar {
+    width: 120%;
+    max-height: 62%;
+    left: 58%;
+    bottom: 10px;
+  }
+
+  .carInfo {
+    left: 18px;
+    bottom: 24px;
+    max-width: 240px;
+  }
+
+  .carInfo p {
+    font-size: 10px;
+    letter-spacing: 4px;
+  }
+
+  .carInfo h2 {
+    font-size: 38px;
+    line-height: .86;
+    letter-spacing: -3px;
+  }
+
+  .carInfo span {
+    font-size: 13px;
   }
 
   .garage {
     order: 2;
-    max-height: none;
-    padding: 12px;
     display: flex;
     gap: 10px;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    border-radius: 20px;
+    padding: 10px;
+    max-height: none;
+    border-radius: 22px;
   }
 
   .garage::-webkit-scrollbar {
@@ -1603,120 +1661,34 @@ opacity: 0;
   }
 
   .car {
-    min-width: 185px;
-    grid-template-columns: 72px 1fr;
-    scroll-snap-align: start;
-    margin-bottom: 0;
+    min-width: 170px;
+    grid-template-columns: 70px 1fr;
+    margin: 0;
+    padding: 10px;
   }
 
   .car img {
-    width: 72px;
-    height: 50px;
-    object-fit: contain;
-  }
-
-  .showroom {
-    order: 1;
-    padding: 10px;
-    border-radius: 22px;
-  }
-
-  .heroCard {
-    height: 430px;
-    border-radius: 22px;
-  }
-
-  .garagePartnerWall {
-    display: none;
-  }
-
-  .garageBg {
-    object-position: center;
-  }
-
-  .garageCar {
-    width: 118%;
-    max-height: 72%;
-    left: 54%;
-    bottom: -8px;
-  }
-
-  .floorGlow {
-    width: 80%;
-    bottom: 8px;
-  }
-
-  .carInfo {
-    left: 18px;
-    bottom: 20px;
-    max-width: 260px;
-  }
-
-  .carInfo p {
-    font-size: 10px;
-    letter-spacing: 3px;
-  }
-
-  .carInfo h2 {
-    font-size: clamp(34px, 11vw, 52px);
-    letter-spacing: -3px;
-    line-height: .9;
-  }
-
-  .carInfo span {
-    font-size: 12px;
-    margin-top: 10px;
-  }
-
-  .stageButtons {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    right: 12px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-
-  .stage {
-    min-width: 0;
-    padding: 10px 6px;
-    border-radius: 12px;
-    font-size: 12px;
-  }
-
-  .stage small {
-    font-size: 9px;
-  }
-
-  .gamePrompt {
-    display: none;
+    width: 68px;
+    height: 48px;
   }
 
   .boostPanel {
+    order: 3;
     padding: 14px;
-    border-radius: 20px;
-  }
-
-  .boostHeader {
-    align-items: flex-start;
-    gap: 10px;
+    border-radius: 22px;
   }
 
   .boostHeader h3 {
     font-size: 26px;
   }
 
-  .gainPill {
-    font-size: 12px;
-    padding: 8px 10px;
-  }
-
   .boost {
     padding: 14px;
+    margin-top: 12px;
   }
 
   .boostNumbers {
+    display: grid;
     grid-template-columns: 1fr;
     gap: 6px;
   }
@@ -1727,58 +1699,62 @@ opacity: 0;
 
   .stockNumber,
   .currentNumber {
+    font-size: 30px;
     text-align: left;
-    font-size: 28px;
   }
 
   .boostTrack {
-    height: 22px;
-  }
-
-  .boostMeta {
-    font-size: 10px;
-    letter-spacing: 1px;
+    height: 18px;
   }
 
   .summary {
-    order: 3;
-    padding: 14px;
+    order: 4;
+    padding: 16px;
     border-radius: 22px;
   }
 
   .summaryTop h3 {
-    font-size: 24px;
+    font-size: 26px;
+  }
+
+  .statCard {
+    padding: 18px;
   }
 
   .statCard strong {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .optionsPanel {
-    margin-top: 12px;
-    padding: 14px;
+    order: 5;
+    padding: 16px;
     border-radius: 22px;
   }
 
   .upgradeTop h2 {
-    font-size: 24px;
+    font-size: 28px;
+    line-height: 1;
   }
 
   .optionsGrid {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 12px;
   }
 
   .option {
-    min-height: 78px;
-    border-radius: 16px;
+    min-height: 82px;
+    padding: 18px;
   }
 
   .cta {
     position: sticky;
-    bottom: 10px;
-    z-index: 50;
-    box-shadow: 0 0 35px rgba(250,204,21,.35);
+    bottom: 12px;
+    z-index: 100;
+    border-radius: 18px;
+  }
+
+  .gamePrompt {
+    display: none;
   }
 }
         @media (max-width: 1200px) {
