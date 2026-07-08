@@ -1529,40 +1529,41 @@ opacity: 0;
 
 @media (max-width: 768px) {
   .page {
-    padding: 14px;
+    padding: 10px;
     overflow-x: hidden;
   }
 
   .topbar {
-    display: block;
-    margin-bottom: 14px;
     position: relative;
+    display: block;
+    margin-bottom: 12px;
   }
 
   .eyebrow {
-    font-size: 11px;
-    letter-spacing: 4px;
+    font-size: 10px;
+    letter-spacing: 3px;
   }
 
   h1 {
-    font-size: 44px;
-    line-height: .9;
-    letter-spacing: -3px;
+    font-size: 42px;
+    line-height: .88;
+    letter-spacing: -2px;
     max-width: 260px;
   }
 
   .sub {
-    font-size: 14px;
-    max-width: 300px;
+    font-size: 13px;
     line-height: 1.35;
+    max-width: 260px;
+    margin-top: 8px;
   }
 
   .classBadge {
     position: absolute;
-    top: 8px;
     right: 0;
-    width: 94px;
-    height: 78px;
+    top: 4px;
+    width: 90px;
+    height: 72px;
     border-radius: 18px;
   }
 
@@ -1571,19 +1572,23 @@ opacity: 0;
   }
 
   .classBadge strong {
-    font-size: 30px;
+    font-size: 28px;
+  }
+
+  .classBadge small {
+    font-size: 9px;
   }
 
   .layout {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
   }
 
   .showroom {
     order: 1;
-    padding: 8px;
-    border-radius: 24px;
+    padding: 10px;
+    border-radius: 22px;
   }
 
   .heroCard {
@@ -1595,17 +1600,57 @@ opacity: 0;
     display: none;
   }
 
+  .garageBg {
+    object-position: center;
+  }
+
+  .garageCar {
+    width: 116%;
+    max-height: 72%;
+    left: 54%;
+    bottom: -6px;
+  }
+
+  .carInfo {
+    left: 16px;
+    bottom: 18px;
+    max-width: 280px;
+  }
+
+  .carInfo p {
+    font-size: 10px;
+    letter-spacing: 3px;
+  }
+
+  .carInfo h2 {
+    font-size: clamp(32px, 10vw, 50px);
+    line-height: .9;
+    letter-spacing: -3px;
+  }
+
+  .carInfo span {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+
   .stageButtons {
-    top: 10px;
-    left: 10px;
-    right: 10px;
+    position: sticky;
+    top: 8px;
+    z-index: 90;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 8px;
+    margin: 10px 0 12px;
+    padding: 8px;
+    border-radius: 18px;
+    background: rgba(0,0,0,.78);
+    border: 1px solid rgba(250,204,21,.18);
+    backdrop-filter: blur(14px);
   }
 
   .stage {
-    padding: 10px 6px;
+    min-width: 0;
+    padding: 12px 6px;
     border-radius: 14px;
     font-size: 12px;
   }
@@ -1614,42 +1659,69 @@ opacity: 0;
     font-size: 9px;
   }
 
-  .garageCar {
-    width: 120%;
-    max-height: 62%;
-    left: 58%;
-    bottom: 10px;
+  .gamePrompt {
+    display: none;
   }
 
-  .carInfo {
-    left: 18px;
-    bottom: 24px;
-    max-width: 240px;
+  .boostPanel {
+    order: 2;
+    padding: 14px;
+    border-radius: 20px;
   }
 
-  .carInfo p {
+  .boostHeader {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .boostHeader h3 {
+    font-size: 24px;
+  }
+
+  .gainPill {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .boost {
+    padding: 14px;
+    margin-bottom: 12px;
+    border-radius: 18px;
+  }
+
+  .boostNumbers {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .boostArrow {
+    display: none;
+  }
+
+  .stockNumber,
+  .currentNumber {
+    text-align: left;
+    font-size: 26px;
+  }
+
+  .boostTrack {
+    height: 18px;
+  }
+
+  .boostMeta {
     font-size: 10px;
-    letter-spacing: 4px;
-  }
-
-  .carInfo h2 {
-    font-size: 38px;
-    line-height: .86;
-    letter-spacing: -3px;
-  }
-
-  .carInfo span {
-    font-size: 13px;
+    letter-spacing: 1px;
   }
 
   .garage {
-    order: 2;
+    order: 3;
+    max-height: none;
+    padding: 10px;
     display: flex;
     gap: 10px;
     overflow-x: auto;
-    padding: 10px;
-    max-height: none;
-    border-radius: 22px;
+    scroll-snap-type: x mandatory;
+    border-radius: 20px;
   }
 
   .garage::-webkit-scrollbar {
@@ -1661,100 +1733,68 @@ opacity: 0;
   }
 
   .car {
-    min-width: 170px;
+    min-width: 180px;
     grid-template-columns: 70px 1fr;
-    margin: 0;
-    padding: 10px;
+    scroll-snap-align: center;
+    margin-bottom: 0;
   }
 
   .car img {
-    width: 68px;
+    width: 70px;
     height: 48px;
-  }
-
-  .boostPanel {
-    order: 3;
-    padding: 14px;
-    border-radius: 22px;
-  }
-
-  .boostHeader h3 {
-    font-size: 26px;
-  }
-
-  .boost {
-    padding: 14px;
-    margin-top: 12px;
-  }
-
-  .boostNumbers {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 6px;
-  }
-
-  .boostArrow {
-    display: none;
-  }
-
-  .stockNumber,
-  .currentNumber {
-    font-size: 30px;
-    text-align: left;
-  }
-
-  .boostTrack {
-    height: 18px;
+    object-fit: contain;
   }
 
   .summary {
     order: 4;
-    padding: 16px;
+    padding: 14px;
     border-radius: 22px;
   }
 
   .summaryTop h3 {
-    font-size: 26px;
-  }
-
-  .statCard {
-    padding: 18px;
+    font-size: 24px;
   }
 
   .statCard strong {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .optionsPanel {
     order: 5;
-    padding: 16px;
+    margin-top: 0;
+    padding: 14px;
     border-radius: 22px;
   }
 
   .upgradeTop h2 {
-    font-size: 28px;
-    line-height: 1;
+    font-size: 26px;
+    line-height: 1.05;
   }
 
   .optionsGrid {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
   }
 
   .option {
-    min-height: 82px;
-    padding: 18px;
+    min-height: 92px;
+    border-radius: 18px;
+    padding: 14px;
+  }
+
+  .option span {
+    font-size: 10px;
+  }
+
+  .option strong {
+    font-size: 16px;
   }
 
   .cta {
     position: sticky;
-    bottom: 12px;
+    bottom: 10px;
     z-index: 100;
-    border-radius: 18px;
-  }
-
-  .gamePrompt {
-    display: none;
+    box-shadow: 0 0 35px rgba(250,204,21,.35);
   }
 }
         @media (max-width: 1200px) {
