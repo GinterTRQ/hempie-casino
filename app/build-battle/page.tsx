@@ -1527,6 +1527,10 @@ opacity: 0;
     drop-shadow(0 0 30px rgba(250,204,21,.20));
 }
 
+        @media (max-width: 1200px) {
+          .layout {
+            grid-template-columns: 1fr;
+          }
 @media (max-width: 768px) {
   .page {
     padding: 10px;
@@ -1797,11 +1801,6 @@ opacity: 0;
     box-shadow: 0 0 35px rgba(250,204,21,.35);
   }
 }
-        @media (max-width: 1200px) {
-          .layout {
-            grid-template-columns: 1fr;
-          }
-
           .optionsGrid {
             grid-template-columns: repeat(2, 1fr);
           }
@@ -1831,6 +1830,7 @@ opacity: 0;
     </main>
   );
 }
+
 
 function BoostBar({
   label,
